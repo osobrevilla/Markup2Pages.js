@@ -1,16 +1,16 @@
 (function (window, document, undefined) {
 
     Markup2Pages = function (html, options) {
+        var p;
         this.options = {
             height: 600,
             width: 450,
             pageClass: ''
         };
-        for (var p in options)
+        for (p in options)
             this.options[p] = options[p];
         this.el = document.createElement('div');
         this.el.innerHTML = html;
-        this.wrap = null;
         this.page = null;
         this.pages = [];
     };
@@ -42,15 +42,15 @@
                 for (var cloned, node = source.firstChild; node; node = node.nextSibling) {
 
                     switch (node.nodeType) {
-                    case window.Node.ELEMENT_NODE:
-                        cloned = node.cloneNode(false);
-                        target.appendChild(cloned);
-                        if (node.hasChildNodes())
-                            this._browser(node, cloned);
-                        break;
-                    case window.Node.TEXT_NODE:
-                        target.appendChild(cloned = node.cloneNode(false));
-                        break;
+                        case window.Node.ELEMENT_NODE:
+                            cloned = node.cloneNode(false);
+                            target.appendChild(cloned);
+                            if (node.hasChildNodes())
+                                this._browser(node, cloned);
+                            break;
+                        case window.Node.TEXT_NODE:
+                            target.appendChild(cloned = node.cloneNode(false));
+                            break;
                     }
 
                     if (this._isOverflow()) {
@@ -59,31 +59,31 @@
                             cloned.parentNode.removeChild(cloned);
 
                         switch (node.nodeType) {
-                        case window.Node.ELEMENT_NODE:
-                            if (node.hasChildNodes()) {
-                                this._browser(node, target)
-                            } else {
-                                this._newPage();
-                                this.page.appendChild(cloned);
-                                target = cloned.parentNode;
-                            }
-                            break;
-                        case window.Node.TEXT_NODE:
-
-                            var words = this._toWordNodes(node);
-
-                            if (words.childNodes.length > 1) {
-                                var first = words.childNodes.item(0);
-                                node.parentNode.replaceChild(words, node);
-                                node = first;
-                            } else {
-                                this._newPage();
-                                var pNode = node.parentNode.cloneNode(false);
-                                pNode.appendChild(node.cloneNode(false));
-                                this.page.appendChild(pNode);
-                                target = pNode;
-                            }
-                            break;
+                            case window.Node.ELEMENT_NODE:
+                                if (node.hasChildNodes()) {
+                                    this._browser(node, target)
+                                } else {
+                                    this._newPage();
+                                    this.page.appendChild(cloned);
+                                    target = cloned.parentNode;
+                                }
+                                break;
+                            case window.Node.TEXT_NODE:
+    
+                                var words = this._toWordNodes(node);
+    
+                                if (words.childNodes.length > 1) {
+                                    var first = words.childNodes.item(0);
+                                    node.parentNode.replaceChild(words, node);
+                                    node = first;
+                                } else {
+                                    this._newPage();
+                                    var pNode = node.parentNode.cloneNode(false);
+                                    pNode.appendChild(node.cloneNode(false));
+                                    this.page.appendChild(pNode);
+                                    target = pNode;
+                                }
+                                break;
                         }
                     }
 
