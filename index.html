@@ -1,0 +1,50 @@
+
+<html>
+<head>
+    <title>M2P.js</title>
+    <meta charset="utf-8">
+    <style type="text/css">
+        body { background: #EEE;  font-family: Georgia; font-size: 14px; text-rendering: optimizeSpeed; }
+        .page { background: #FFF; line-height: 1.3; box-shadow: 0 1px 2px #CCC; padding:1em;  margin: 0 auto 1em; overflow: hidden; }
+        .page  img { margin: .5em; }
+    </style>
+    <script type="text/javascript" src="src/M2P.js"></script>
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function (res){
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'src/data.html', true);
+            xhr.addEventListener('readystatechange', function(res){
+                
+                 if (xhr.readyState == 4 && xhr.status == 200) {
+
+                    new M2P(xhr.responseText, {
+                        height: 480,
+                        width: 350,
+                        pageClass: 'page'
+                    }).generate(function(pages){
+                        // Paint Pages
+                        console.log(pages);
+                        var frag = document.createDocumentFragment(),
+                            i;
+                        for ( i in pages ) {
+                            pages[i].className = 'page';
+                            frag.appendChild(pages[i]);
+                        }
+                            
+                        document.body.appendChild(frag);
+
+                        for ( i in pages ) {
+                            pages[i].setAttribute("data-height", pages[i].clientHeight);
+                        }
+                    });
+                 }
+                
+            });
+
+            xhr.send();
+        });
+    </script>
+</head>
+<body></body>
+</html>
