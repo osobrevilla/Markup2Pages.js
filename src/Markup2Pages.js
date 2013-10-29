@@ -1,4 +1,4 @@
-(function (win, doc, undefined) {
+(function (window, document, undefined) {
 
     Markup2Pages = function (html, options) {
         this.options = {
