@@ -40,62 +40,57 @@
 
             if (source.hasChildNodes()) {
 
-                main: 
                 for (var cloned, node = source.firstChild; node; node = node.nextSibling) {
 
                     switch (node.nodeType) {
-                        case window.Node.ELEMENT_NODE:
-                            cloned = node.cloneNode(false);
-                            target.appendChild(cloned);
-                            if ( node.hasChildNodes() )
-                                this._browser(node, cloned);
-                            break;
-                        case window.Node.TEXT_NODE: 
-                            target.appendChild(cloned = node.cloneNode(false));
-                            break;
+                    case window.Node.ELEMENT_NODE:
+                        cloned = node.cloneNode(false);
+                        target.appendChild(cloned);
+                        if (node.hasChildNodes())
+                            this._browser(node, cloned);
+                        break;
+                    case window.Node.TEXT_NODE:
+                        target.appendChild(cloned = node.cloneNode(false));
+                        break;
                     }
 
                     if (this._isOverflow()) {
-                        
+
                         if (cloned.parentNode)
                             cloned.parentNode.removeChild(cloned);
 
                         switch (node.nodeType) {
-                            case window.Node.ELEMENT_NODE:
-                                if (node.hasChildNodes()) {
-                                    this._browser(node, target)
-                                } else {
-                                    this._newPage();
-                                    this.page.appendChild(cloned);
-                                    target = cloned.parentNode;
-                                }
-                                break;
-                            case window.Node.TEXT_NODE:
-
-                                var words = this._toWordNodes(node);
-
-                                if ( words.childNodes.length > 1 ) { 
-                                    var first = words.childNodes.item(0);
-                                    node.parentNode.replaceChild(words, node);
-                                    node = first;
-                                } else {
-                                    this._newPage();
-                                    var pNode = node.parentNode.cloneNode(false);
-                                    pNode.appendChild(node.cloneNode(false));
-                                    this.page.appendChild(pNode);
-                                    // var pNode = oParent.cloneNode(false);
-                                    // pNode.appendChild(node.cloneNode(false));
-                                    // this.page.appendChild(pNode);
-                                    target = pNode;
-                                    // this._browser(pNode, )
-                                }
-                                break;
+                        case window.Node.ELEMENT_NODE:
+                            if (node.hasChildNodes()) {
+                                this._browser(node, target)
+                            } else {
+                                this._newPage();
+                                this.page.appendChild(cloned);
+                                target = cloned.parentNode;
                             }
+                            break;
+                        case window.Node.TEXT_NODE:
+
+                            var words = this._toWordNodes(node);
+
+                            if (words.childNodes.length > 1) {
+                                var first = words.childNodes.item(0);
+                                node.parentNode.replaceChild(words, node);
+                                node = first;
+                            } else {
+                                this._newPage();
+                                var pNode = node.parentNode.cloneNode(false);
+                                pNode.appendChild(node.cloneNode(false));
+                                this.page.appendChild(pNode);
+                                target = pNode;
+                            }
+                            break;
+                        }
                     }
 
                 }
 
-            } 
+            }
 
         },
 
@@ -106,8 +101,7 @@
         _createCalcPage: function () {
             this.page = document.createElement('div');
             this._css(this.page, {
-                // position: 'relative',
-                // visibility: 'hidden',                
+                visibility: 'hidden',
                 width: this.options.width + 'px'
             });
             this.page.className = this.options.pageClass;
