@@ -134,14 +134,15 @@
         },
 
         generate: function (callback) {
+            var that = this;
             setTimeout(function () {
-                this._browser(this.el, this._createCalcPage());
-                if (this.page.hasChildNodes())
-                    this._newPage();
-                if (this.page.parentNode)
-                    this.page.parentNode.removeChild(this.page);
-                callback && callback(this.pages);
-            }.bind(this), 25);
+                that._browser(that.el, that._createCalcPage());
+                if (that.page.hasChildNodes())
+                    that._newPage();
+                if (that.page.parentNode)
+                    that.page.parentNode.removeChild(that.page);
+                callback && callback(that.pages);
+            }, 25);
         },
 
         _css: function (el, styles) {
