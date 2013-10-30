@@ -1,3 +1,9 @@
+/*!
+ * Markup2Pages.js v0.1 (beta) ~ Copyright (c) 2013
+ * Oscar Sobrevilla oscar.sobrevilla@gmail.com
+ * Released under MIT license
+ */
+
 (function (window, document, undefined) {
 
     Markup2Pages = function (html, options) {
