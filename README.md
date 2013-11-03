@@ -2,4 +2,4 @@
 
 Split html code to pages with maximum size.
 
-[see the demo](https://github.com/osobrevilla/Markup2Pages.js)
+[see the demo](https://osobrevilla.github.io/Markup2Pages.js)
