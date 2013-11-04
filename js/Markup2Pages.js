@@ -26,9 +26,11 @@
 
         constructor: Markup2Pages,
 
+        _splitReg: /(\S+\s)/g,
+
         _toWordNodes: function (node) {
             var frag = document.createDocumentFragment(),
-                words = node.textContent.split(/([\s])+/),
+                words = node.textContent.match(this._splitReg),
                 len = words.length,
                 i = 0,
                 tn = document.createTextNode("");
@@ -44,8 +46,14 @@
         _browser: function (source, target, oParent) {
 
             if (source.hasChildNodes()) {
+                
+                var cloned, 
+                    tempNextSibling, 
+                    node = source.firstChild;
 
-                for (var cloned, node = source.firstChild; node; node = node.nextSibling) {
+                for (; node; node = tempNextSibling || node.nextSibling) {
+                    
+                    tempNextSibling = null;
 
                     switch (node.nodeType) {
                         case window.Node.ELEMENT_NODE:
@@ -81,7 +89,7 @@
                                 if (words.childNodes.length > 1) {
                                     var first = words.childNodes.item(0);
                                     node.parentNode.replaceChild(words, node);
-                                    node = first;
+                                    tempNextSibling = first;
                                 } else {
                                     this._newPage();
                                     var pNode = node.parentNode.cloneNode(false);
@@ -136,9 +144,11 @@
         generate: function (callback) {
             var that = this;
             setTimeout(function () {
+                console.time("speed");
                 that._browser(that.el, that._createCalcPage());
                 if (that.page.hasChildNodes())
                     that._newPage();
+                console.timeEnd("speed");
                 if (that.page.parentNode)
                     that.page.parentNode.removeChild(that.page);
                 callback && callback(that.pages);
