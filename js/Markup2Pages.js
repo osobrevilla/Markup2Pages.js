@@ -26,7 +26,7 @@
 
         constructor: Markup2Pages,
 
-        _splitReg: /(\S+\s)/g,
+        _splitReg: /(\S+\s|\S+$)/g,
 
         _toWordNodes: function (node) {
             var frag = document.createDocumentFragment(),
@@ -144,11 +144,9 @@
         generate: function (callback) {
             var that = this;
             setTimeout(function () {
-                console.time("speed");
                 that._browser(that.el, that._createCalcPage());
                 if (that.page.hasChildNodes())
                     that._newPage();
-                console.timeEnd("speed");
                 if (that.page.parentNode)
                     that.page.parentNode.removeChild(that.page);
                 callback && callback(that.pages);
