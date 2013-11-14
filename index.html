@@ -37,14 +37,15 @@
             xhr.addEventListener('readystatechange', function(res){
                 
                  if (xhr.readyState == 4 && xhr.status == 200) {
-
+                    
+                    console.time("calc");
                     new Markup2Pages(xhr.responseText, {
                         height: 480,
                         width: 350,
                         pageClass: 'page'
                     }).generate(function(pages){
                         // Paint Pages
-                        console.log(pages);
+                        console.timeEnd("calc");    
                         var frag = document.createDocumentFragment(),
                             target = document.getElementById('target'),
                             i;
